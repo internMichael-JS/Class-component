@@ -1,11 +1,6 @@
-export type PokemonResult = {
-  name: string;
-  id: number;
-  type: string;
-  image: string;
-};
+import type { OnePokemon } from '../utils/interfaces';
 
-export async function fetchPokemonByName(name: string): Promise<PokemonResult> {
+export async function fetchPokemonByName(name: string): Promise<OnePokemon> {
   const trimmed = name.trim().toLowerCase();
   const url = `https://pokeapi.co/api/v2/pokemon/${trimmed}`;
 

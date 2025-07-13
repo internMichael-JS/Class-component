@@ -1,6 +1,7 @@
 import './Header.css';
 import pokemon from '../../assets/pokemon.svg';
 import React from 'react';
+import Button from '../../utils/Button';
 
 type HeaderProps = {
   onSearch: (query: string) => void;
@@ -11,7 +12,7 @@ type HeaderState = {
 
 class Header extends React.Component<HeaderProps> {
   state: HeaderState = {
-    inputValue: '',
+    inputValue: localStorage.getItem('searchQuery') || '',
   };
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ inputValue: e.target.value });
@@ -33,12 +34,9 @@ class Header extends React.Component<HeaderProps> {
             value={this.state.inputValue}
             onChange={this.handleChange}
           />
-          <button
-            onClick={() => this.props.onSearch(this.state.inputValue)}
-            className="search-button"
-          >
+          <Button onClick={() => this.props.onSearch(this.state.inputValue)}>
             Search
-          </button>
+          </Button>
         </div>
       </div>
     );
