@@ -1,0 +1,22 @@
+.app-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+}
+
+.item-container {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  padding: 20px;
+  width: 100%;
+  max-width: 700px;
+  min-height: 100%;
+}
+
+.main {
+  margin-top: 20px;
+  height: fit-content;
+  min-height: 50vh;
+}
