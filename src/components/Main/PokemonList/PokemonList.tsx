@@ -22,31 +22,15 @@ class PokemonList extends React.Component<PokemonListProps> {
         <h1>Pokémon List</h1>
         <div className="list-item">
           {pokemons.map((pokemon) => (
-            <div
-              key={pokemon.id}
-              style={{
-                border: '1px solid #ddd',
-                borderRadius: '8px',
-                padding: '12px',
-                margin: '7px',
-                textAlign: 'center',
-                backgroundColor: '#f9f9f9',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                width: '150px',
-              }}
-            >
+            <div key={pokemon.id} className="pokemon-item">
               <img
                 src={pokemon.img}
                 alt={pokemon.name}
-                style={{ width: '80px', height: '80px' }}
+                className="pokemon-img"
               />
-              <h4 style={{ margin: '8px 0 4px' }}>{pokemon.name}</h4>
-              <p style={{ margin: 0, fontSize: '12px' }}>
-                Type: {pokemon.types}
-              </p>
-              <p style={{ margin: 0, fontSize: '12px' }}>
-                Experience: {pokemon.experience}
-              </p>
+              <h4 className="pokemon-name">{pokemon.name}</h4>
+              <p className="pokemon-types">Type: {pokemon.types}</p>
+              <p className="pokemon-types">Experience: {pokemon.experience}</p>
             </div>
           ))}
         </div>

@@ -84,7 +84,6 @@ class App extends React.Component {
 
     try {
       const details = await fetchPokemonByName(name);
-      console.log(details);
       const pokemonCard = this.mapToPokemonCard(details);
 
       this.setState({
@@ -95,7 +94,6 @@ class App extends React.Component {
       });
 
       localStorage.setItem('searchQuery', name.trim());
-      console.log(details);
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unexpected error';

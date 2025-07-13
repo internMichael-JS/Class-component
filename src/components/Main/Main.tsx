@@ -17,7 +17,7 @@ type MainProps = {
 
 class Main extends React.Component<MainProps> {
   render() {
-    const { pokemons, isLoading, error } = this.props;
+    const { isLoading, error } = this.props;
 
     if (isLoading) {
       return <Loader />;
@@ -26,7 +26,6 @@ class Main extends React.Component<MainProps> {
     if (error) {
       return <p style={{ color: 'red' }}>{error}</p>;
     }
-    console.log(pokemons);
     return <PokemonList {...this.props} />;
   }
 }
