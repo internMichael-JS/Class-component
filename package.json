@@ -11,7 +11,20 @@
     "format": "prettier --write .",
     "format:fix": "prettier --write .",
     "preview": "vite preview",
-    "prepare": "husky"
+    "prepare": "husky",
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix --max-warnings=0",
+      "prettier --write"
+    ],
+    "*.{css,scss}": [
+      "prettier --write"
+    ],
+    "*.{md,json}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "react": "^19.1.0",
