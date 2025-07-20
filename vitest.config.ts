@@ -14,9 +14,11 @@ export default defineConfig({
       exclude: [
         'src//*.test.{js,jsx,ts,tsx}',
         'src//*.spec.{js,jsx,ts,tsx}',
-        'src/index.{js,jsx,ts,tsx}',
+        'src/main.{js,jsx,ts,tsx}',
         'src/setupTests.{js,ts}',
         'src//*.d.ts',
+        'src/**/render.tsx',
+        'src/**/interfaces.ts',
       ],
       thresholds: {
         lines: 50,
