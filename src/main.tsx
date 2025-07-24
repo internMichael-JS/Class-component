@@ -1,8 +1,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import App from './App.tsx';
-import ErrorBoundary from './components/common/ErrorBoundary.tsx';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './router/router.tsx';
 
 const container = document.getElementById('root');
 
@@ -12,8 +12,6 @@ if (!container) {
 
 createRoot(container).render(
   <StrictMode>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
+    <RouterProvider router={router} />
   </StrictMode>
 );

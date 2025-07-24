@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { reducer, initialState, type Action } from './AppState';
+import { reducer, initialState, type Action } from './appState';
 import type { Pokemon } from './utils/interfaces';
 
 const mockPokemon: Pokemon = {
