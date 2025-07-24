@@ -1,4 +1,3 @@
-import React from 'react';
 import Loader from './Loader/Loader';
 import './Main.css';
 import PokemonList from './PokemonList/PokemonList';
@@ -15,19 +14,17 @@ type MainProps = {
   handleNext: () => void;
 };
 
-class Main extends React.Component<MainProps> {
-  render() {
-    const { isLoading, error } = this.props;
+const Main = (props: MainProps) => {
+  const { isLoading, error } = props;
 
-    if (isLoading) {
-      return <Loader />;
-    }
-
-    if (error) {
-      return <p style={{ color: 'red' }}>{error}</p>;
-    }
-    return <PokemonList {...this.props} />;
+  if (isLoading) {
+    return <Loader />;
   }
-}
+
+  if (error) {
+    return <p style={{ color: 'red' }}>{error}</p>;
+  }
+  return <PokemonList {...props} />;
+};
 
 export default Main;
