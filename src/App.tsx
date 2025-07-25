@@ -6,11 +6,14 @@ import { fetchPokemonByName } from './api/getOnePokemon.ts';
 import { fetchAllPokemonsFromUrl } from './api/getAllPokemons.ts';
 import type { OnePokemon, PokemonTypeSlot } from './utils/interfaces.ts';
 import { initialState, reducer } from './app/appState.ts';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
 import { AppContext } from './app/appContext.ts';
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const page = Number(searchParams.get('page')) || 1;
 
   const mapToPokemonCard = (details: OnePokemon) => ({
     name: details.name,
@@ -20,8 +23,13 @@ const App = () => {
     experience: details.base_experience,
   });
 
-  const loadPage = async (url: string) => {
+  const loadPage = async (pageOrUrl: number | string) => {
     dispatch({ type: 'LOAD_START' });
+
+    const url =
+      typeof pageOrUrl === 'string'
+        ? pageOrUrl
+        : `https://pokeapi.co/api/v2/pokemon?offset=${(pageOrUrl - 1) * 20}&limit=20`;
 
     try {
       const data = await fetchAllPokemonsFromUrl(url);
@@ -92,25 +100,26 @@ const App = () => {
   );
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedQuery = localStorage.getItem('searchQuery');
-      if (savedQuery) {
-        handleSearch(savedQuery);
-      } else {
-        loadPage('https://pokeapi.co/api/v2/pokemon?offset=0&limit=20');
-      }
+    if (!searchParams.get('page')) {
+      setSearchParams({ page: '1' }, { replace: true });
     }
-  }, [handleSearch]);
+    const savedQuery = localStorage.getItem('searchQuery');
+    if (savedQuery) {
+      handleSearch(savedQuery);
+    } else {
+      loadPage(page);
+    }
+  }, [handleSearch, page, searchParams, setSearchParams]);
 
   const handleNext = () => {
     if (state.next) {
-      loadPage(state.next);
+      setSearchParams({ page: String(page + 1) });
     }
   };
 
   const handlePrevious = () => {
-    if (state.prev) {
-      loadPage(state.prev);
+    if (state.prev && page > 1) {
+      setSearchParams({ page: String(page - 1) });
     }
   };
 
