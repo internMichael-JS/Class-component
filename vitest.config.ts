@@ -19,6 +19,7 @@ export default defineConfig({
         'src//*.d.ts',
         'src/**/render.tsx',
         'src/**/interfaces.ts',
+        'src/tests-utils/**',
       ],
       thresholds: {
         lines: 50,

@@ -92,11 +92,13 @@ const App = () => {
   );
 
   useEffect(() => {
-    const savedQuery = localStorage.getItem('searchQuery');
-    if (savedQuery) {
-      handleSearch(savedQuery);
-    } else {
-      loadPage('https://pokeapi.co/api/v2/pokemon?offset=0&limit=20');
+    if (typeof window !== 'undefined') {
+      const savedQuery = localStorage.getItem('searchQuery');
+      if (savedQuery) {
+        handleSearch(savedQuery);
+      } else {
+        loadPage('https://pokeapi.co/api/v2/pokemon?offset=0&limit=20');
+      }
     }
   }, [handleSearch]);
 
