@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import ErrorBoundary from '../components/common/ErrorBoundary';
+import Page404 from '../components/Page404/Page404';
 
 export const router = createBrowserRouter([
   {
@@ -10,6 +11,6 @@ export const router = createBrowserRouter([
         <App />
       </ErrorBoundary>
     ),
-    errorElement: <div>Failed to load Pokemons</div>,
+    errorElement: <Page404 />,
   },
 ]);
