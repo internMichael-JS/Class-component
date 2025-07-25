@@ -1,4 +1,4 @@
-import type { Pokemon, State } from './utils/interfaces';
+import type { Pokemon, State } from '../utils/interfaces';
 
 export const initialState: State = {
   pokemons: [],

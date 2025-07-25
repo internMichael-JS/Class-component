@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { reducer, initialState, type Action } from './appState';
-import type { Pokemon } from './utils/interfaces';
+import type { Pokemon } from '../utils/interfaces';
 
 const mockPokemon: Pokemon = {
   name: 'pikachu',

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './Footer.css';
 import Button from '../../utils/Button';
+
 const Footer = () => {
   const [shouldTrow, setShouldTrow] = useState(false);
 

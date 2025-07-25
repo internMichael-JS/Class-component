@@ -1,9 +1,10 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import App from './App';
+import { screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import * as api from './api/getAllPokemons';
 import * as getOne from './api/getOnePokemon';
 import userEvent from '@testing-library/user-event';
+import Main from './components/Main/Main';
+import { renderWithRouter } from './tests-utils/renderAppWithRouter';
 
 const mockAllPokemons = {
   count: 1302,
@@ -48,7 +49,7 @@ describe('App component', () => {
       json: async () => mockDetails,
     } as Response);
 
-    render(<App />);
+    renderWithRouter(<Main />);
     await screen.findByText(/Find your pokemon/i);
     await screen.findByText(/pikachu/i);
   });
@@ -58,7 +59,7 @@ describe('App component', () => {
 
     vi.spyOn(getOne, 'fetchPokemonByName').mockResolvedValue(mockDetails);
 
-    render(<App />);
+    renderWithRouter(<Main />);
 
     await waitFor(() => {
       expect(screen.getByText(/pikachu/i)).toBeInTheDocument();
@@ -74,7 +75,7 @@ describe('App component', () => {
       json: async () => mockDetails,
     } as Response);
 
-    render(<App />);
+    renderWithRouter(<Main />);
     const input = await screen.findByRole('textbox');
     await userEvent.clear(input);
     await userEvent.type(input, 'pikachu');
@@ -94,7 +95,7 @@ describe('App component', () => {
       json: async () => mockDetails,
     } as Response);
 
-    render(<App />);
+    renderWithRouter(<Main />);
 
     const input = await screen.findByPlaceholderText(/search/i);
     const button = screen.getByRole('button', { name: /search/i });
@@ -112,7 +113,7 @@ describe('App component', () => {
       json: async () => mockDetails,
     } as Response);
 
-    render(<App />);
+    renderWithRouter(<Main />);
 
     const input = await screen.findByPlaceholderText(/search/i);
     const button = screen.getByRole('button', { name: /search/i });
@@ -128,11 +129,13 @@ describe('App component', () => {
       new Error('API down')
     );
 
-    render(<App />);
+    renderWithRouter(<Main />);
 
-    expect(
-      await screen.findByText(/failed to load pokemons/i)
-    ).toBeInTheDocument();
+    const errorMessage = await screen.findByText(/failed to load pokemons/i);
+    expect(errorMessage).toBeInTheDocument();
+    await waitFor(() => {
+      expect(api.fetchAllPokemonsFromUrl).toHaveBeenCalled();
+    });
   });
 
   test('shows error message when search fails (handleSearch catch)', async () => {
@@ -140,7 +143,7 @@ describe('App component', () => {
       new Error('Pokemon not found (status 404)')
     );
 
-    render(<App />);
+    renderWithRouter(<Main />);
 
     const input = await screen.findByPlaceholderText(/search/i);
     const button = screen.getByRole('button', { name: /search/i });
@@ -172,7 +175,7 @@ describe('App component', () => {
       json: async () => mockDetails,
     } as Response);
 
-    render(<App />);
+    renderWithRouter(<Main />);
     const input = await screen.findByPlaceholderText(/search/i);
     await userEvent.type(input, 'pikachu');
     await userEvent.click(screen.getByRole('button', { name: /search/i }));
@@ -199,7 +202,7 @@ describe('App component', () => {
       json: async () => mockDetails,
     } as Response);
 
-    render(<App />);
+    renderWithRouter(<Main />);
     const nextBtn = await screen.findByRole('button', { name: /next/i });
     await userEvent.click(nextBtn);
   });
@@ -221,7 +224,7 @@ describe('App component', () => {
       json: async () => mockDetails,
     } as Response);
 
-    render(<App />);
+    renderWithRouter(<Main />);
     const prevBtn = await screen.findByRole('button', { name: /prev/i });
     await userEvent.click(prevBtn);
   });

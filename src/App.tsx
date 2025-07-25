@@ -2,11 +2,12 @@ import { useCallback, useEffect, useReducer } from 'react';
 import './App.css';
 import Footer from './components/Footer/Footer.tsx';
 import Header from './components/Header/Header.tsx';
-import Main from './components/Main/Main.tsx';
 import { fetchPokemonByName } from './api/getOnePokemon.ts';
 import { fetchAllPokemonsFromUrl } from './api/getAllPokemons.ts';
 import type { OnePokemon, PokemonTypeSlot } from './utils/interfaces.ts';
-import { initialState, reducer } from './appState.ts';
+import { initialState, reducer } from './app/appState.ts';
+import { Outlet } from 'react-router-dom';
+import { AppContext } from './app/appContext.ts';
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -119,16 +120,20 @@ const App = () => {
         </header>
 
         <main className="main">
-          <Main
-            pokemons={state.pokemons}
-            isLoading={state.isLoading}
-            error={state.error}
-            next={state.next}
-            prev={state.prev}
-            loadPage={loadPage}
-            handlePrevious={handlePrevious}
-            handleNext={handleNext}
-          />
+          <AppContext
+            value={{
+              pokemons: state.pokemons,
+              isLoading: state.isLoading,
+              error: state.error,
+              next: state.next,
+              prev: state.prev,
+              loadPage,
+              handleNext,
+              handlePrevious,
+            }}
+          >
+            <Outlet />
+          </AppContext>
         </main>
 
         <footer>

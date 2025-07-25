@@ -1,20 +1,9 @@
 import './PokemonList.css';
 import Button from '../../../utils/Button';
-import type { Pokemon } from '../../../utils/interfaces';
+import { useAppContext } from '../../../app/appContext';
 
-type PokemonListProps = {
-  pokemons: Pokemon[];
-  isLoading: boolean;
-  error: string | null;
-  next: string | null;
-  prev: string | null;
-  loadPage: (url: string) => void;
-  handlePrevious: () => void;
-  handleNext: () => void;
-};
-
-const PokemonList = (props: PokemonListProps) => {
-  const { pokemons, handlePrevious, handleNext } = props;
+const PokemonList = () => {
+  const { pokemons, handlePrevious, handleNext, prev, next } = useAppContext();
   return (
     <div>
       <h1>Pokémon List</h1>
@@ -30,10 +19,10 @@ const PokemonList = (props: PokemonListProps) => {
       </div>
 
       <div className="buttons-container">
-        <Button onClick={handlePrevious} disabled={props.prev === null}>
+        <Button onClick={handlePrevious} disabled={prev === null}>
           Prev
         </Button>
-        <Button onClick={handleNext} disabled={props.next === null}>
+        <Button onClick={handleNext} disabled={next === null}>
           Next
         </Button>
       </div>
