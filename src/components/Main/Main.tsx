@@ -1,33 +1,23 @@
-import React from 'react';
+import { Outlet } from 'react-router-dom';
+import { useAppContext } from '../../app/appContext';
 import Loader from './Loader/Loader';
 import './Main.css';
-import PokemonList from './PokemonList/PokemonList';
-import type { Pokemon } from '../../utils/interfaces';
 
-type MainProps = {
-  pokemons: Pokemon[];
-  isLoading: boolean;
-  error: string | null;
-  next: string | null;
-  prev: string | null;
-  loadPage: (url: string) => void;
-  handlePrevious: () => void;
-  handleNext: () => void;
-};
+const Main = () => {
+  const { isLoading, error } = useAppContext();
 
-class Main extends React.Component<MainProps> {
-  render() {
-    const { isLoading, error } = this.props;
-
-    if (isLoading) {
-      return <Loader />;
-    }
-
-    if (error) {
-      return <p style={{ color: 'red' }}>{error}</p>;
-    }
-    return <PokemonList {...this.props} />;
+  if (isLoading) {
+    return <Loader />;
   }
-}
+
+  if (error) {
+    return <p style={{ color: 'red' }}>{error}</p>;
+  }
+  return (
+    <div className="list-section">
+      <Outlet />
+    </div>
+  );
+};
 
 export default Main;

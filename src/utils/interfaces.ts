@@ -4,6 +4,8 @@ export interface Pokemon {
   img: string;
   types: string;
   id: number;
+  height?: number;
+  weight?: number;
 }
 export interface OnePokemon {
   base_experience: number;
@@ -36,4 +38,15 @@ export interface PokemonDetails {
   };
   types: PokemonTypeSlot[];
   base_experience: number;
+}
+
+export interface AppContextProps {
+  pokemons: Pokemon[];
+  isLoading: boolean;
+  error: string | null;
+  next: string | null;
+  prev: string | null;
+  loadPage: (url: string) => void;
+  handlePrevious: () => void;
+  handleNext: () => void;
 }

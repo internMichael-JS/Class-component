@@ -12,7 +12,9 @@
 .header-text {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 1.4rem;
 }
 
 .logo {
@@ -52,4 +54,24 @@
 
 .search-button:hover {
   background-color: #2980b9;
+}
+.about-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: white;
+  color: #1976d2;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.about-button:hover {
+  background-color: #7794b1;
+}
+
+.about-button.active {
+  background-color: rgb(213, 211, 211);
+  cursor: default;
+  pointer-events: none;
 }

@@ -7,19 +7,17 @@ type ButtonProps = {
   disabled?: boolean;
 };
 
-class Button extends React.Component<ButtonProps> {
-  render() {
-    const { onClick, children, disabled } = this.props;
-    return (
-      <button
-        onClick={onClick}
-        className={`button ${disabled ? 'disabled' : 'active'}`}
-        disabled={disabled}
-      >
-        {children}
-      </button>
-    );
-  }
-}
+const Button = (props: ButtonProps) => {
+  const { onClick, children, disabled } = props;
+  return (
+    <button
+      onClick={onClick}
+      className={`button ${disabled ? 'disabled' : 'active'}`}
+      disabled={disabled}
+    >
+      {children}
+    </button>
+  );
+};
 
 export default Button;

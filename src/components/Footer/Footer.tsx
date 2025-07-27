@@ -1,21 +1,22 @@
-import React from 'react';
+import { useState } from 'react';
 import './Footer.css';
 import Button from '../../utils/Button';
-class Footer extends React.Component {
-  state = { shouldTrow: false };
-  throwError = () => {
-    this.setState({ shouldTrow: true });
+
+const Footer = () => {
+  const [shouldTrow, setShouldTrow] = useState(false);
+
+  const throwError = () => {
+    setShouldTrow(true);
   };
-  render() {
-    if (this.state.shouldTrow) {
-      throw new Error('Test error when pressing button');
-    }
-    return (
-      <div className="footer-container">
-        <Button onClick={this.throwError}>Error Button</Button>
-      </div>
-    );
+
+  if (shouldTrow) {
+    throw new Error('Test error when pressing button');
   }
-}
+  return (
+    <div className="footer-container">
+      <Button onClick={throwError}>Error Button</Button>
+    </div>
+  );
+};
 
 export default Footer;
