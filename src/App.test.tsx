@@ -5,6 +5,7 @@ import * as getOne from './api/getOnePokemon';
 import userEvent from '@testing-library/user-event';
 import Main from './components/Main/Main';
 import { renderWithRouter } from './tests-utils/renderAppWithRouter';
+import { PokemonList } from './components/Main/PokemonList/PokemonList';
 
 const mockAllPokemons = {
   count: 1302,
@@ -49,7 +50,7 @@ describe('App component', () => {
       json: async () => mockDetails,
     } as Response);
 
-    renderWithRouter(<Main />);
+    renderWithRouter(<PokemonList />);
     await screen.findByText(/Find your pokemon/i);
     await screen.findByText(/pikachu/i);
   });
@@ -59,7 +60,7 @@ describe('App component', () => {
 
     vi.spyOn(getOne, 'fetchPokemonByName').mockResolvedValue(mockDetails);
 
-    renderWithRouter(<Main />);
+    renderWithRouter(<PokemonList />);
 
     await waitFor(() => {
       expect(screen.getByText(/pikachu/i)).toBeInTheDocument();
@@ -75,7 +76,7 @@ describe('App component', () => {
       json: async () => mockDetails,
     } as Response);
 
-    renderWithRouter(<Main />);
+    renderWithRouter(<PokemonList />);
     const input = await screen.findByRole('textbox');
     await userEvent.clear(input);
     await userEvent.type(input, 'pikachu');
@@ -113,7 +114,7 @@ describe('App component', () => {
       json: async () => mockDetails,
     } as Response);
 
-    renderWithRouter(<Main />);
+    renderWithRouter(<PokemonList />);
 
     const input = await screen.findByPlaceholderText(/search/i);
     const button = screen.getByRole('button', { name: /search/i });
@@ -175,7 +176,7 @@ describe('App component', () => {
       json: async () => mockDetails,
     } as Response);
 
-    renderWithRouter(<Main />);
+    renderWithRouter(<PokemonList />);
     const input = await screen.findByPlaceholderText(/search/i);
     await userEvent.type(input, 'pikachu');
     await userEvent.click(screen.getByRole('button', { name: /search/i }));
@@ -202,7 +203,7 @@ describe('App component', () => {
       json: async () => mockDetails,
     } as Response);
 
-    renderWithRouter(<Main />);
+    renderWithRouter(<PokemonList />);
     const nextBtn = await screen.findByRole('button', { name: /next/i });
     await userEvent.click(nextBtn);
   });
@@ -224,7 +225,7 @@ describe('App component', () => {
       json: async () => mockDetails,
     } as Response);
 
-    renderWithRouter(<Main />);
+    renderWithRouter(<PokemonList />);
     const prevBtn = await screen.findByRole('button', { name: /prev/i });
     await userEvent.click(prevBtn);
   });

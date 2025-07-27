@@ -1,7 +1,7 @@
+import { Outlet } from 'react-router-dom';
 import { useAppContext } from '../../app/appContext';
 import Loader from './Loader/Loader';
 import './Main.css';
-import PokemonList from './PokemonList/PokemonList';
 
 const Main = () => {
   const { isLoading, error } = useAppContext();
@@ -13,7 +13,11 @@ const Main = () => {
   if (error) {
     return <p style={{ color: 'red' }}>{error}</p>;
   }
-  return <PokemonList />;
+  return (
+    <div className="list-section">
+      <Outlet />
+    </div>
+  );
 };
 
 export default Main;

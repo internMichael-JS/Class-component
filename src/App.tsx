@@ -47,6 +47,8 @@ const App = () => {
               .map((t: PokemonTypeSlot) => t.type.name)
               .join(', '),
             experience: details.base_experience,
+            weight: details.weight,
+            height: details.height,
           };
         })
       );

@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react';
 import Main from './Main';
 import { describe, expect, test, vi } from 'vitest';
 import { AppContext } from '../../app/appContext';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { PokemonList } from './PokemonList/PokemonList';
 
 vi.mock('../common/Loader', () => ({
   default: () => <div data-testid="loader">Loading...</div>,
@@ -44,10 +46,16 @@ describe('Main component', () => {
 
   test('renders PokemonList when no loading or error', () => {
     render(
-      <AppContext.Provider value={{ ...defaultProps }}>
-        <Main />
-      </AppContext.Provider>
+      <MemoryRouter initialEntries={['/']}>
+        <AppContext.Provider value={{ ...defaultProps }}>
+          <Routes>
+            <Route path="/" element={<Main />}>
+              <Route index element={<PokemonList />} />
+            </Route>
+          </Routes>
+        </AppContext.Provider>
+      </MemoryRouter>
     );
-    expect(screen.getByText('Pokémon List')).toBeInTheDocument();
+    expect(screen.getByText(/Pokémon List/i)).toBeInTheDocument();
   });
 });

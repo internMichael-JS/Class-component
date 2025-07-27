@@ -4,6 +4,8 @@ export interface Pokemon {
   img: string;
   types: string;
   id: number;
+  height?: number;
+  weight?: number;
 }
 export interface OnePokemon {
   base_experience: number;
