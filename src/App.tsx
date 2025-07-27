@@ -8,67 +8,74 @@ import type { OnePokemon, PokemonTypeSlot } from './utils/interfaces.ts';
 import { initialState, reducer } from './app/appState.ts';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import { AppContext } from './app/appContext.ts';
+import { useLocalStorage } from './hooks/useLocalStorage.ts';
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useLocalStorage('searchQuery', '');
 
   const page = Number(searchParams.get('page')) || 1;
 
-  const mapToPokemonCard = (details: OnePokemon) => ({
-    name: details.name,
-    id: details.id,
-    img: details.sprites.front_default,
-    types: details.types.map((t: PokemonTypeSlot) => t.type.name).join(', '),
-    experience: details.base_experience,
-  });
+  const mapToPokemonCard = useCallback(
+    (details: OnePokemon) => ({
+      name: details.name,
+      id: details.id,
+      img: details.sprites.front_default,
+      types: details.types.map((t: PokemonTypeSlot) => t.type.name).join(', '),
+      experience: details.base_experience,
+    }),
+    []
+  );
 
-  const loadPage = async (pageOrUrl: number | string) => {
-    dispatch({ type: 'LOAD_START' });
+  const loadPage = useCallback(
+    async (pageOrUrl: number | string) => {
+      dispatch({ type: 'LOAD_START' });
 
-    const url =
-      typeof pageOrUrl === 'string'
-        ? pageOrUrl
-        : `https://pokeapi.co/api/v2/pokemon?offset=${(pageOrUrl - 1) * 20}&limit=20`;
+      const url =
+        typeof pageOrUrl === 'string'
+          ? pageOrUrl
+          : `https://pokeapi.co/api/v2/pokemon?offset=${(pageOrUrl - 1) * 20}&limit=20`;
 
-    try {
-      const data = await fetchAllPokemonsFromUrl(url);
+      try {
+        const data = await fetchAllPokemonsFromUrl(url);
+        const detailedPokemons = await Promise.all(
+          data.results.map(async (pokemon: { name: string; url: string }) => {
+            const response = await fetch(pokemon.url);
+            const details = await response.json();
 
-      const detailedPokemons = await Promise.all(
-        data.results.map(async (pokemon: { name: string; url: string }) => {
-          const response = await fetch(pokemon.url);
-          const details = await response.json();
+            return {
+              name: details.name,
+              id: details.id,
+              img: details.sprites.front_default,
+              types: details.types
+                .map((t: PokemonTypeSlot) => t.type.name)
+                .join(', '),
+              experience: details.base_experience,
+              weight: details.weight,
+              height: details.height,
+            };
+          })
+        );
 
-          return {
-            name: details.name,
-            id: details.id,
-            img: details.sprites.front_default,
-            types: details.types
-              .map((t: PokemonTypeSlot) => t.type.name)
-              .join(', '),
-            experience: details.base_experience,
-            weight: details.weight,
-            height: details.height,
-          };
-        })
-      );
-
-      dispatch({
-        type: 'LOAD_SUCCESS',
-        payload: {
-          pokemons: detailedPokemons,
-          next: data.next,
-          prev: data.previous,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-      dispatch({
-        type: 'LOAD_ERROR',
-        payload: 'Failed to load pokemons',
-      });
-    }
-  };
+        dispatch({
+          type: 'LOAD_SUCCESS',
+          payload: {
+            pokemons: detailedPokemons,
+            next: data.next,
+            prev: data.previous,
+          },
+        });
+      } catch (error) {
+        console.error(error);
+        dispatch({
+          type: 'LOAD_ERROR',
+          payload: 'Failed to load pokemons',
+        });
+      }
+    },
+    [dispatch]
+  );
 
   const handleSearch = useCallback(
     async (name: string) => {
@@ -87,7 +94,7 @@ const App = () => {
           },
         });
 
-        localStorage.setItem('searchQuery', name.trim());
+        setSearchQuery(name.trim());
       } catch (error: unknown) {
         const errorMessage =
           error instanceof Error ? error.message : 'Unexpected error';
@@ -98,20 +105,27 @@ const App = () => {
         });
       }
     },
-    [dispatch]
+    [dispatch, mapToPokemonCard, setSearchQuery]
   );
 
   useEffect(() => {
     if (!searchParams.get('page')) {
       setSearchParams({ page: '1' }, { replace: true });
     }
-    const savedQuery = localStorage.getItem('searchQuery');
-    if (savedQuery) {
-      handleSearch(savedQuery);
+
+    if (searchQuery) {
+      handleSearch(searchQuery);
     } else {
       loadPage(page);
     }
-  }, [handleSearch, page, searchParams, setSearchParams]);
+  }, [
+    searchParams,
+    setSearchParams,
+    searchQuery,
+    handleSearch,
+    loadPage,
+    page,
+  ]);
 
   const handleNext = () => {
     if (state.next) {
@@ -131,7 +145,6 @@ const App = () => {
         <header>
           <Header onSearch={handleSearch} />
         </header>
-
         <main className="main">
           <AppContext
             value={{
