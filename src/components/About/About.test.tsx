@@ -2,13 +2,17 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import About from './About';
 import { beforeEach, describe, expect, test } from 'vitest';
+import { Provider } from 'react-redux';
+import { store } from '../../app/store';
 
 describe('About component', () => {
   beforeEach(() => {
     render(
-      <MemoryRouter>
-        <About />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <About />
+        </MemoryRouter>
+      </Provider>
     );
   });
 
