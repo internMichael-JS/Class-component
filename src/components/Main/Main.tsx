@@ -1,17 +1,17 @@
 import { Outlet } from 'react-router-dom';
-import { useAppContext } from '../../app/appContext';
 import Loader from './Loader/Loader';
 import './Main.css';
+import { useAppSelector } from '../../hooks/reduxHooks';
 
 const Main = () => {
-  const { isLoading, error } = useAppContext();
+  const load = useAppSelector((state) => state.load);
 
-  if (isLoading) {
+  if (load.isLoading) {
     return <Loader />;
   }
 
-  if (error) {
-    return <p style={{ color: 'red' }}>{error}</p>;
+  if (load.error) {
+    return <p style={{ color: 'red' }}>{load.error}</p>;
   }
   return (
     <div className="list-section">

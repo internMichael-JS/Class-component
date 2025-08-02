@@ -145,11 +145,6 @@ const App = () => {
         <main className="main">
           <AppContext
             value={{
-              pokemons: load.pokemons,
-              isLoading: load.isLoading,
-              error: load.error,
-              next: load.next,
-              prev: load.prev,
               loadPage,
               handleNext,
               handlePrevious,

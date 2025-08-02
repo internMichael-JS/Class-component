@@ -4,13 +4,15 @@ import { useAppContext } from '../../../app/appContext';
 import React from 'react';
 import { PokemonDetails } from '../../PokemonDetails/PokemonDetails';
 import { useSearchParams } from 'react-router-dom';
+import { useAppSelector } from '../../../hooks/reduxHooks';
 
 export const PokemonList = () => {
-  const { pokemons, handlePrevious, handleNext, prev, next } = useAppContext();
+  const load = useAppSelector((state) => state.load);
+  const { handlePrevious, handleNext } = useAppContext();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const detailsId = searchParams.get('details');
-  const selectedPokemon = pokemons.find((p) => p.id === Number(detailsId));
+  const selectedPokemon = load.pokemons.find((p) => p.id === Number(detailsId));
 
   return (
     <div className="list-wrapper">
@@ -18,7 +20,7 @@ export const PokemonList = () => {
         <h1>Pokémon List</h1>
         <div className="list-item">
           <div className="card-item">
-            {pokemons.map((pokemon) => (
+            {load.pokemons.map((pokemon) => (
               <div
                 key={pokemon.id}
                 className="pokemon-item"
@@ -56,10 +58,10 @@ export const PokemonList = () => {
         </div>
 
         <div className="buttons-container">
-          <Button onClick={handlePrevious} disabled={prev === null}>
+          <Button onClick={handlePrevious} disabled={load.prev === null}>
             Prev
           </Button>
-          <Button onClick={handleNext} disabled={next === null}>
+          <Button onClick={handleNext} disabled={load.next === null}>
             Next
           </Button>
         </div>
