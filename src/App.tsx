@@ -1,17 +1,25 @@
-import { useCallback, useEffect, useReducer } from 'react';
+import { useCallback, useEffect } from 'react';
 import './App.css';
 import Footer from './components/Footer/Footer.tsx';
 import Header from './components/Header/Header.tsx';
 import { fetchPokemonByName } from './api/getOnePokemon.ts';
 import { fetchAllPokemonsFromUrl } from './api/getAllPokemons.ts';
 import type { OnePokemon, PokemonTypeSlot } from './utils/interfaces.ts';
-import { initialState, reducer } from './app/appState.ts';
+
 import { Outlet, useSearchParams } from 'react-router-dom';
 import { AppContext } from './app/appContext.ts';
 import { useLocalStorage } from './hooks/useLocalStorage.ts';
+import { useAppDispatch, useAppSelector } from './hooks/reduxHooks.ts';
+import {
+  loadError,
+  loadStart,
+  loadSuccess,
+} from './redux/pokemonLoadingSlice.ts';
 
 const App = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const load = useAppSelector((state) => state.load);
+  const dispatch = useAppDispatch();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useLocalStorage('searchQuery', '');
 
@@ -30,7 +38,7 @@ const App = () => {
 
   const loadPage = useCallback(
     async (pageOrUrl: number | string) => {
-      dispatch({ type: 'LOAD_START' });
+      dispatch(loadStart());
 
       const url =
         typeof pageOrUrl === 'string'
@@ -57,21 +65,16 @@ const App = () => {
             };
           })
         );
-
-        dispatch({
-          type: 'LOAD_SUCCESS',
-          payload: {
+        dispatch(
+          loadSuccess({
             pokemons: detailedPokemons,
             next: data.next,
             prev: data.previous,
-          },
-        });
+          })
+        );
       } catch (error) {
         console.error(error);
-        dispatch({
-          type: 'LOAD_ERROR',
-          payload: 'Failed to load pokemons',
-        });
+        dispatch(loadError('Failed to load pokemons'));
       }
     },
     [dispatch]
@@ -79,30 +82,24 @@ const App = () => {
 
   const handleSearch = useCallback(
     async (name: string) => {
-      dispatch({ type: 'LOAD_START' });
+      dispatch(loadStart());
 
       try {
         const details = await fetchPokemonByName(name);
         const pokemonCard = mapToPokemonCard(details);
-
-        dispatch({
-          type: 'LOAD_SUCCESS',
-          payload: {
+        dispatch(
+          loadSuccess({
             pokemons: [pokemonCard],
             next: null,
             prev: null,
-          },
-        });
+          })
+        );
 
         setSearchQuery(name.trim());
       } catch (error: unknown) {
         const errorMessage =
           error instanceof Error ? error.message : 'Unexpected error';
-
-        dispatch({
-          type: 'LOAD_ERROR',
-          payload: errorMessage,
-        });
+        dispatch(loadError(errorMessage));
       }
     },
     [dispatch, mapToPokemonCard, setSearchQuery]
@@ -128,13 +125,13 @@ const App = () => {
   ]);
 
   const handleNext = () => {
-    if (state.next) {
+    if (load.next) {
       setSearchParams({ page: String(page + 1) });
     }
   };
 
   const handlePrevious = () => {
-    if (state.prev && page > 1) {
+    if (load.prev && page > 1) {
       setSearchParams({ page: String(page - 1) });
     }
   };
@@ -148,11 +145,11 @@ const App = () => {
         <main className="main">
           <AppContext
             value={{
-              pokemons: state.pokemons,
-              isLoading: state.isLoading,
-              error: state.error,
-              next: state.next,
-              prev: state.prev,
+              pokemons: load.pokemons,
+              isLoading: load.isLoading,
+              error: load.error,
+              next: load.next,
+              prev: load.prev,
               loadPage,
               handleNext,
               handlePrevious,
