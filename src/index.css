@@ -90,3 +90,12 @@ h6 {
 }
 
 /*--------------------*/
+.light {
+  background-color: white;
+  color: black;
+}
+
+.dark {
+  background-color: rgb(57, 42, 42);
+  color: rgb(78, 119, 245);
+}

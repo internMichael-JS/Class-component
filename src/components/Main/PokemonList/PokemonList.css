@@ -26,6 +26,16 @@
   justify-content: space-around;
 }
 
+.lightCard.pokemon-item {
+  background-color: white;
+  color: black;
+}
+
+.darkCard.pokemon-item {
+  background-color: grey;
+  color: rgb(206, 205, 251);
+}
+
 .pokemon-item {
   border: 1px solid #ddd;
   border-radius: 8px;

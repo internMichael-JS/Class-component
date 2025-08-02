@@ -8,6 +8,10 @@
   align-items: start;
 }
 
+.dark.about-container {
+  color: white;
+}
+
 .about-title {
   text-align: center;
   font-size: 1.5rem;

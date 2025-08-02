@@ -18,6 +18,7 @@ import {
 import { mapToPokemonCard } from './app/mapPokemonCard.ts';
 
 const App = () => {
+  const theme = useAppSelector((state) => state.theme.mode);
   const load = useAppSelector((state) => state.load);
   const dispatch = useAppDispatch();
 
@@ -96,6 +97,7 @@ const App = () => {
   );
 
   useEffect(() => {
+    document.body.className = theme;
     if (!searchParams.get('page')) {
       setSearchParams({ page: '1' }, { replace: true });
     }
@@ -112,6 +114,7 @@ const App = () => {
     handleSearch,
     loadPage,
     page,
+    theme,
   ]);
 
   const handleNext = () => {

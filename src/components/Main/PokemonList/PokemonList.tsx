@@ -1,5 +1,5 @@
 import './PokemonList.css';
-import Button from '../../../utils/Button';
+import Button from '../../../utils/Button/Button';
 import { useAppContext } from '../../../app/appContext';
 import React from 'react';
 import { PokemonDetails } from '../../PokemonDetails/PokemonDetails';
@@ -7,12 +7,14 @@ import { useSearchParams } from 'react-router-dom';
 import { useAppSelector } from '../../../hooks/reduxHooks';
 
 export const PokemonList = () => {
+  const theme = useAppSelector((state) => state.theme.mode);
   const load = useAppSelector((state) => state.load);
   const { handlePrevious, handleNext } = useAppContext();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const detailsId = searchParams.get('details');
   const selectedPokemon = load.pokemons.find((p) => p.id === Number(detailsId));
+  const cardClassName = `${theme}Card pokemon-item`;
 
   return (
     <div className="list-wrapper">
@@ -23,7 +25,7 @@ export const PokemonList = () => {
             {load.pokemons.map((pokemon) => (
               <div
                 key={pokemon.id}
-                className="pokemon-item"
+                className={cardClassName}
                 onClick={() => {
                   searchParams.set('details', pokemon.id.toString());
                   setSearchParams(searchParams);

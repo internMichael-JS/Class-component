@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import pokemonReducer from '../redux/pokemonLoadingSlice';
+import themeReducer from '../redux/themeSlice';
 
 export const store = configureStore({
   reducer: {
     load: pokemonReducer,
+    theme: themeReducer,
   },
 });
 
