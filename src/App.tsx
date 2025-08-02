@@ -4,7 +4,7 @@ import Footer from './components/Footer/Footer.tsx';
 import Header from './components/Header/Header.tsx';
 import { fetchPokemonByName } from './api/getOnePokemon.ts';
 import { fetchAllPokemonsFromUrl } from './api/getAllPokemons.ts';
-import type { OnePokemon, PokemonTypeSlot } from './utils/interfaces.ts';
+import type { PokemonTypeSlot } from './utils/interfaces.ts';
 
 import { Outlet, useSearchParams } from 'react-router-dom';
 import { AppContext } from './app/appContext.ts';
@@ -15,6 +15,7 @@ import {
   loadStart,
   loadSuccess,
 } from './redux/pokemonLoadingSlice.ts';
+import { mapToPokemonCard } from './app/mapPokemonCard.ts';
 
 const App = () => {
   const load = useAppSelector((state) => state.load);
@@ -24,17 +25,6 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useLocalStorage('searchQuery', '');
 
   const page = Number(searchParams.get('page')) || 1;
-
-  const mapToPokemonCard = useCallback(
-    (details: OnePokemon) => ({
-      name: details.name,
-      id: details.id,
-      img: details.sprites.front_default,
-      types: details.types.map((t: PokemonTypeSlot) => t.type.name).join(', '),
-      experience: details.base_experience,
-    }),
-    []
-  );
 
   const loadPage = useCallback(
     async (pageOrUrl: number | string) => {
@@ -102,7 +92,7 @@ const App = () => {
         dispatch(loadError(errorMessage));
       }
     },
-    [dispatch, mapToPokemonCard, setSearchQuery]
+    [dispatch, setSearchQuery]
   );
 
   useEffect(() => {

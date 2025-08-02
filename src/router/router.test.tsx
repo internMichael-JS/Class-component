@@ -5,6 +5,8 @@ import { router as appRouter } from './router';
 
 import Page404 from '../components/Page404/Page404';
 import ErrorBoundary from '../components/common/ErrorBoundary';
+import { Provider } from 'react-redux';
+import { store } from '../app/store';
 
 describe('App router', () => {
   test('renders Main component on /', async () => {
@@ -12,7 +14,11 @@ describe('App router', () => {
       initialEntries: ['/'],
     });
 
-    render(<RouterProvider router={testRouter} />);
+    render(
+      <Provider store={store}>
+        <RouterProvider router={testRouter} />
+      </Provider>
+    );
     expect(await screen.findByText(/search/i)).toBeInTheDocument();
   });
 
@@ -21,7 +27,11 @@ describe('App router', () => {
       initialEntries: ['/about'],
     });
 
-    render(<RouterProvider router={testRouter} />);
+    render(
+      <Provider store={store}>
+        <RouterProvider router={testRouter} />
+      </Provider>
+    );
     expect(await screen.findByText(/about this project/i)).toBeInTheDocument();
   });
 
@@ -30,7 +40,11 @@ describe('App router', () => {
       initialEntries: ['/does-not-exist'],
     });
 
-    render(<RouterProvider router={testRouter} />);
+    render(
+      <Provider store={store}>
+        <RouterProvider router={testRouter} />
+      </Provider>
+    );
     expect(await screen.findByText(/page not found/i)).toBeInTheDocument();
   });
 
