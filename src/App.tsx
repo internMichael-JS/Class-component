@@ -16,7 +16,7 @@ import {
   loadSuccess,
 } from './redux/pokemonLoadingSlice.ts';
 import { mapToPokemonCard } from './app/mapPokemonCard.ts';
-import LikeWindow from './components/LikeWindiw/LikeWindiw.tsx';
+import LikeWindow from './components/LikeWindiw/LikeWindow.tsx';
 
 type Theme = 'light' | 'dark';
 
