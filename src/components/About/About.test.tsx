@@ -2,12 +2,16 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import About from './About';
 import { beforeEach, describe, expect, test } from 'vitest';
+import { AppContext } from '../../app/appContext';
+import { mockContext } from '../../tests-utils/mockContext';
 
 describe('About component', () => {
   beforeEach(() => {
     render(
       <MemoryRouter>
-        <About />
+        <AppContext value={mockContext}>
+          <About />
+        </AppContext>
       </MemoryRouter>
     );
   });

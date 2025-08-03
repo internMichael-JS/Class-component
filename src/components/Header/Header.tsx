@@ -1,8 +1,9 @@
 import './Header.css';
 import pokemon from '../../assets/pokemon.svg';
 import React, { useState } from 'react';
-import Button from '../../utils/Button';
+import Button from '../../utils/Button/Button';
 import { NavLink } from 'react-router-dom';
+import ThemeButton from '../../utils/themeButton/ThemeButton';
 
 type HeaderProps = {
   onSearch: (query: string) => void;
@@ -23,9 +24,12 @@ const Header = (props: HeaderProps) => {
           <img src={pokemon} alt="logo" className="logo-img" />
         </div>
         <h1>Find your pokemon</h1>
-        <NavLink to="/about" className="about-button">
-          About us
-        </NavLink>
+        <div>
+          <ThemeButton />
+          <NavLink to="/about" className="about-button">
+            About us
+          </NavLink>
+        </div>
       </div>
       <div className="search-bar">
         <input

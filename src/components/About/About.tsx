@@ -1,10 +1,13 @@
 import './About.css';
 import { Link } from 'react-router-dom';
 import photo from '../../assets/internMichael-JS.webp';
+import { useAppContext } from '../../app/appContext';
 
 const About = () => {
+  const { theme } = useAppContext();
+  const aboutClassName = `${theme} about-container`;
   return (
-    <div className="about-container">
+    <div className={aboutClassName}>
       <h2 className="about-title">About This Project</h2>
 
       <section className="about-section">

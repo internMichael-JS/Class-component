@@ -41,11 +41,8 @@ export interface PokemonDetails {
 }
 
 export interface AppContextProps {
-  pokemons: Pokemon[];
-  isLoading: boolean;
-  error: string | null;
-  next: string | null;
-  prev: string | null;
+  theme: string;
+  toggleTheme: () => void;
   loadPage: (url: string) => void;
   handlePrevious: () => void;
   handleNext: () => void;

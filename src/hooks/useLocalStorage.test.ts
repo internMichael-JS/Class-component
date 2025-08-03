@@ -9,20 +9,20 @@ describe('useLocalStorage', () => {
     localStorage.clear();
   });
 
-  test('возвращает defaultValue, если в localStorage ничего нет', () => {
+  test('returns defaultValue if there is nothing in localStorage', () => {
     const { result } = renderHook(() => useLocalStorage(key, 'default'));
     const [value] = result.current;
     expect(value).toBe('default');
   });
 
-  test('берёт значение из localStorage, если оно есть', () => {
+  test('takes the value from localStorage if it exists', () => {
     localStorage.setItem(key, 'stored-value');
     const { result } = renderHook(() => useLocalStorage(key, 'default'));
     const [value] = result.current;
     expect(value).toBe('stored-value');
   });
 
-  test('обновляет localStorage при изменении значения', () => {
+  test('updates localStorage when value changes', () => {
     const { result } = renderHook(() => useLocalStorage(key, 'default'));
 
     act(() => {
@@ -32,7 +32,7 @@ describe('useLocalStorage', () => {
     expect(result.current[0]).toBe('new-value');
     expect(localStorage.getItem(key)).toBe('new-value');
   });
-  test('возвращает defaultValue, если getItem выбрасывает ошибку', () => {
+  test('returns defaultValue if getItem throws an error', () => {
     const key = 'broken-key';
 
     const originalGetItem = localStorage.getItem;
