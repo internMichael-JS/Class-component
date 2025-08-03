@@ -1,0 +1,52 @@
+.lightCard.pokemon-item {
+  background-color: white;
+  color: black;
+}
+
+.darkCard.pokemon-item {
+  background-color: grey;
+  color: rgb(206, 205, 251);
+}
+
+.pokemon-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 7px;
+  text-align: center;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 150px;
+}
+
+.pokemon-img {
+  width: 80px;
+  height: 80px;
+}
+
+.pokemon-name {
+  margin: 8px 0 4px;
+}
+
+.pokemon-types {
+  margin: 0;
+  font-size: 12px;
+}
+
+.pokemon-like {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px;
+}
+.button-like {
+  background-color: white;
+}
+
+.dark.button-like {
+  background-color: grey;
+  color: white;
+}
+
+.checked.like {
+  fill: red;
+}
