@@ -7,12 +7,7 @@ import { PokemonList } from './PokemonList/PokemonList';
 import { Provider } from 'react-redux';
 import { store } from '../../app/store';
 import { renderWithStore } from '../../tests-utils/renderWithStore.tsx';
-
-const defaultProps = {
-  loadPage: () => {},
-  handleNext: () => {},
-  handlePrevious: () => {},
-};
+import { mockContext } from '../../tests-utils/mockContext.ts';
 
 vi.mock('../common/Loader', () => ({
   default: () => <div data-testid="loader">Loading...</div>,
@@ -52,7 +47,7 @@ describe('Main component', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <Provider store={store}>
-          <AppContext.Provider value={{ ...defaultProps }}>
+          <AppContext.Provider value={{ ...mockContext }}>
             <Routes>
               <Route path="/" element={<Main />}>
                 <Route index element={<PokemonList />} />

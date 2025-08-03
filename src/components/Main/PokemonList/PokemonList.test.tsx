@@ -15,6 +15,8 @@ const mockPokemons = [
 ];
 
 const defaultProps = {
+  theme: 'light',
+  toggleTheme: vi.fn(),
   loadPage: vi.fn(),
   handlePrevious: vi.fn(),
   handleNext: vi.fn(),
@@ -24,9 +26,9 @@ describe('PocemonList component', () => {
   test('renders correct number of Pokémon items', () => {
     renderWithStore(
       <MemoryRouter initialEntries={['/']}>
-        <AppContext.Provider value={defaultProps}>
+        <AppContext value={defaultProps}>
           <PokemonList />
-        </AppContext.Provider>
+        </AppContext>
       </MemoryRouter>,
       {
         load: {
