@@ -1,10 +1,10 @@
 import './About.css';
 import { Link } from 'react-router-dom';
 import photo from '../../assets/internMichael-JS.webp';
-import { useAppSelector } from '../../hooks/reduxHooks';
+import { useAppContext } from '../../app/appContext';
 
 const About = () => {
-  const theme = useAppSelector((state) => state.theme.mode);
+  const { theme } = useAppContext();
   const aboutClassName = `${theme} about-container`;
   return (
     <div className={aboutClassName}>

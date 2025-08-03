@@ -1,3 +1,4 @@
+import { useAppContext } from '../../../../app/appContext';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/reduxHooks';
 import { addPokemon, removePokemon } from '../../../../redux/likePokemonSlice';
 import type { Pokemon } from '../../../../utils/interfaces';
@@ -14,7 +15,7 @@ export const PokemonCard = ({
   searchParams,
   setSearchParams,
 }: PokemonCardProps) => {
-  const theme = useAppSelector((state) => state.theme.mode);
+  const { theme } = useAppContext();
   const like = useAppSelector((state) => state.like);
   const dispatch = useAppDispatch();
   const cardClassName = `${theme}Card pokemon-item`;

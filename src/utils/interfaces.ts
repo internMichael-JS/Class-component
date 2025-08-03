@@ -41,6 +41,8 @@ export interface PokemonDetails {
 }
 
 export interface AppContextProps {
+  theme: string;
+  toggleTheme: () => void;
   loadPage: (url: string) => void;
   handlePrevious: () => void;
   handleNext: () => void;

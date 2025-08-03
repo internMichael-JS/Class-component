@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import Footer from './components/Footer/Footer.tsx';
 import Header from './components/Header/Header.tsx';
@@ -18,8 +18,12 @@ import {
 import { mapToPokemonCard } from './app/mapPokemonCard.ts';
 import LikeWindow from './components/LikeWindiw/LikeWindiw.tsx';
 
+type Theme = 'light' | 'dark';
+
 const App = () => {
-  const theme = useAppSelector((state) => state.theme.mode);
+  const [theme, setTheme] = useState<Theme>(() => {
+    return (localStorage.getItem('theme') as Theme) || 'light';
+  });
   const load = useAppSelector((state) => state.load);
   const dispatch = useAppDispatch();
 
@@ -27,6 +31,14 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useLocalStorage('searchQuery', '');
 
   const page = Number(searchParams.get('page')) || 1;
+
+  const toggleTheme = () => {
+    setTheme((prev) => {
+      const newTheme = prev === 'light' ? 'dark' : 'light';
+      localStorage.setItem('theme', newTheme);
+      return newTheme;
+    });
+  };
 
   const loadPage = useCallback(
     async (pageOrUrl: number | string) => {
@@ -132,28 +144,30 @@ const App = () => {
 
   return (
     <div className="app-container">
-      <div className="item-container">
-        <header>
-          <Header onSearch={handleSearch} />
-        </header>
-        <main className="main">
-          <AppContext
-            value={{
-              loadPage,
-              handleNext,
-              handlePrevious,
-            }}
-          >
+      <AppContext
+        value={{
+          theme,
+          toggleTheme,
+          loadPage,
+          handleNext,
+          handlePrevious,
+        }}
+      >
+        <div className="item-container">
+          <header>
+            <Header onSearch={handleSearch} />
+          </header>
+          <main className="main">
             <Outlet />
-          </AppContext>
-        </main>
+          </main>
 
-        <footer>
-          <Footer />
-        </footer>
+          <footer>
+            <Footer />
+          </footer>
 
-        <LikeWindow />
-      </div>
+          <LikeWindow />
+        </div>
+      </AppContext>
     </div>
   );
 };

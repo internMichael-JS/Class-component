@@ -1,19 +1,16 @@
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
-import { toggleTheme } from '../../redux/themeSlice';
+import { useAppContext } from '../../app/appContext';
 import './ThemeButton.css';
 
 const ThemeButton = () => {
-  const dispatch = useAppDispatch();
-  const theme = useAppSelector((state) => state.theme);
+  const { theme, toggleTheme } = useAppContext();
   return (
     <button
       className="themeButton"
       onClick={() => {
-        dispatch(toggleTheme());
-        console.log(theme);
+        toggleTheme();
       }}
     >
-      {theme.mode === 'light' ? (
+      {theme === 'light' ? (
         <svg
           fillRule="evenodd"
           viewBox="64 64 896 896"
