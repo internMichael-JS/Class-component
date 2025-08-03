@@ -16,6 +16,7 @@ import {
   loadSuccess,
 } from './redux/pokemonLoadingSlice.ts';
 import { mapToPokemonCard } from './app/mapPokemonCard.ts';
+import LikeWindow from './components/LikeWindiw/LikeWindiw.tsx';
 
 const App = () => {
   const theme = useAppSelector((state) => state.theme.mode);
@@ -150,6 +151,8 @@ const App = () => {
         <footer>
           <Footer />
         </footer>
+
+        <LikeWindow />
       </div>
     </div>
   );
